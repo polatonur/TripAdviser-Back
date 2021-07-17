@@ -18,33 +18,39 @@ app.get("/", (req, res) => {
 });
 
 app.post("/contact", async (req, res) => {
-  console.log(req.fields);
-  const fName = req.fields.firstname;
-  const lName = req.fields.lastname;
-  const mail = req.fields.email;
-  const message = req.fields.message;
-  if (!message) {
-    message = "Bonjour";
-  }
-  const data = {
-    from: `${fName} ${lName} <${mail}>`,
-    to: process.env.MY_MAIL,
-    subject: "Hello",
-    text: message,
-  };
-  console.log(data);
-
-  mailgun.messages().send(data, (error, body) => {
-    if (error) {
-      console.log(error);
-      res.status(401).json(error);
-    } else {
-      console.log(body);
-      res.status(200).json({
-        message: "Merci pour votre incription",
-      });
+  try {
+    console.log(req.fields);
+    const fName = req.fields.firstname;
+    const lName = req.fields.lastname;
+    const mail = req.fields.email;
+    const message = req.fields.message;
+    if (!message) {
+      message = "Bonjour";
     }
-  });
+    const data = {
+      from: `${fName} ${lName} <${mail}>`,
+      to: process.env.MY_MAIL,
+      subject: "Hello",
+      text: message,
+    };
+    console.log(data);
+
+    mailgun.messages().send(data, (error, body) => {
+      if (error) {
+        console.log(error);
+        res.status(401).json(error);
+      } else {
+        console.log(body);
+        res.status(200).json({
+          message: "Merci pour votre incription",
+        });
+      }
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
 });
 
 let port = process.env.PORT;
