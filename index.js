@@ -23,7 +23,7 @@ app.post("/contact", async (req, res) => {
     const fName = req.fields.firstname;
     const lName = req.fields.lastname;
     const mail = req.fields.email;
-    const message = req.fields.message;
+    let message = req.fields.message;
     if (!message) {
       message = "Bonjour";
     }
