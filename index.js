@@ -11,6 +11,12 @@ const app = express();
 app.use(formidableMiddleware());
 app.use(cors());
 
+app.get("/", (req, res) => {
+  res.status(200).send({
+    message: "Welcome to my TripAdviser backEnd site",
+  });
+});
+
 app.post("/contact", async (req, res) => {
   console.log(req.fields);
   const fName = req.fields.firstname;
@@ -34,7 +40,7 @@ app.post("/contact", async (req, res) => {
       res.status(401).json(error);
     } else {
       console.log(body);
-      res.json({
+      res.status(200).json({
         message: "Merci pour votre incription",
       });
     }
